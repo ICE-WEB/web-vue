@@ -1,12 +1,18 @@
 var path = require('path')
 var webpack = require('webpack')
+var CleadWebpackPlugin = require("clean-webpack-plugin");
+var HtmlWebpackPlugin = require("html-webpack-plugin");
+
 
 module.exports = {
-  entry: './src/app.js',
+  entry:{
+    index: './src/web/app.js',
+    admin: './src/admin/admin.js', 
+  },
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
-    filename: 'build.js'
+    publicPath: './dist/',
+    filename: '[name].js'
   },
   module: {
     rules: [
@@ -54,7 +60,24 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: 'inline-source-map'
+  devtool: 'inline-source-map',
+  plugins:[
+    new CleadWebpackPlugin(['./dist']),
+    new HtmlWebpackPlugin({
+      filename: "../index.html",
+      template: './src/web/index.html',
+      inject: 'body',
+      hash : true,
+      chunks:['index']
+    }),
+    new HtmlWebpackPlugin({
+      filename: "../admin.html",
+      template: './src/admin/admin.html',
+      inject: 'body',
+      hash : true,
+      chunks:['admin']
+    }),
+  ],
 }
 
 if (process.env.NODE_ENV === 'production') {

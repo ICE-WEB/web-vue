@@ -1,12 +1,11 @@
-import ajax from './ajax.js';
+import ajax from '../../common/ajax.js';
 
 
 function Data(){
-	this.baseURL = "http://gumx.top:90/admin/";
 	this.api = {
-		sort:this.baseURL + "sort/query.api",
-		text:this.baseURL + "text/query.api",
-		read:this.baseURL + "text/read.api",
+		sort:"admin/sort/query.api",
+		text:"admin/text/query.api",
+		read:"admin/text/read.api",
 	};
 
 	Data.prototype.getSort = function(vals){

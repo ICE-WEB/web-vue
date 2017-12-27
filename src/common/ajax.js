@@ -32,7 +32,7 @@ export default  function(json){
 		loading.show();
 	}
 	var ajax = $.ajax({    
-		url:json.url,
+		url:"http://gumx.top:90/"+json.url,
 		data:json.data,
 		type:'post',
 		cache:false,    
