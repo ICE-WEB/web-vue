@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta charset="utf-8">
+    <title>星辰</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/atelier-dune-dark.min.css" rel="stylesheet">
+    <link type="text/css" data-themecolor="default" rel='stylesheet' href="css/main-default.css?v=2">
+</head>
+<body>
+<div class="page">
+
+    <div class="mask-l" style="background-color: #fff; width: 100%; height: 100%; position: fixed; top: 0; left:0; z-index: 9999999;"></div> <!--removed by integration-->
+    <header>
+      <div class="container b-header__box b-relative">
+
+        <div class="b-header-r b-right b-header-r--icon">
+
+          <div class="b-top-nav-show-slide f-top-nav-show-slide b-right j-top-nav-show-slide"><i class="fa fa-align-justify"></i></div>
+          <nav class="b-top-nav f-top-nav b-right j-top-nav">
+              <ul class="b-top-nav__1level_wrap">
+                <li class="b-top-nav__1level f-top-nav__1level is-active-top-nav__1level f-primary-b"><a href="index.html"><i class="fa fa-home b-menu-1level-ico"></i>首页 <span class="b-ico-dropdown"><i class="fa fa-arrow-circle-down"></i></span></a>
+                </li>
+                <li class="b-top-nav__1level f-top-nav__1level f-primary-b">
+                    <a href="#"><i class="fa fa-picture-o b-menu-1level-ico"></i>资源 <span class="b-ico-dropdown"><i class="fa fa-arrow-circle-down"></i></span></a>
+                 </li>
+                <li class="b-top-nav__1level f-top-nav__1level f-primary-b">
+                    <a href="#"><i class="fa fa-folder-open b-menu-1level-ico"></i>关于<span class="b-ico-dropdown"><i class="fa fa-arrow-circle-down"></i></span></a>
+                </li>
+
+            </ul>
+
+        </nav>
+    </div>
+</div>
+</header>
+<div class="j-menu-container"></div>
+
+<div class="b-inner-page-header f-inner-page-header b-bg-header-inner-page">
+    <!-- <img src="./img/inner-head-bg.svg" style="position: absolute;height: 156px;width: 100%;z-index: -1;background-color: #5e42a6;"> -->
+  <div class="b-inner-page-header__content">
+    <div class="container">
+      <h3 class="f-primary-l c-default">生命的全部的意义在于无穷地探索尚未知道的东西。</h1>
+      <h3 class="f-primary-l c-default" style="text-align: right;">--左拉</h2>
+  </div>
+</div>
+</div>
+<div class="l-main-container">
+
+    <div class="b-breadcrumbs f-breadcrumbs">
+        <div class="container">
+            <ul>
+                <li><a href="javascrip:void(0);" @click="selectedSortId=-1;page.currPage=1;searchText();"><i class="fa fa-home"></i>首页</a></li>
+                <li><i class="fa fa-angle-right"></i><a href="javascrip:void(0);" @click="searchText()">{{selectedSort.name}}</a></li>
+                <li v-if="selectedText!=null"><i class="fa fa-angle-right"></i>{{selectedText.title}}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="l-inner-page-container" style="min-height: 600px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 col-md-push-3" style="padding: 20px;border: 1px solid #bbb;min-height: 500px;" id="textContent" v-show="contentView=='text'"></div>
+                <div class="col-md-9 col-md-push-3" v-show="contentView=='list'">
+
+                    <div class="b-blog-listing__block" v-for="v in text">
+                        <div class="b-infoblock-with-icon__info f-infoblock-with-icon__info">
+                            <a href="javascrip:void(0);" class="f-infoblock-with-icon__info_title b-infoblock-with-icon__info_title f-primary-l b-title-b-hr f-title-b-hr" @click="readText(v)">
+                                {{v.title}}
+                            </a>
+                            <div class="f-infoblock-with-icon__info_text b-infoblock-with-icon__info_text f-primary-b b-blog-listing__pretitle">
+                                <a href="javascrip:void(0);" class="f-more">星辰</a> ● <a href="javascrip:void(0);" class="f-more">{{sortName(v.ref_sort_id)}}</a> ● <a href="javascrip:void(0)" class="f-more">{{v.create_time.substring(0,10)}}</a>
+                            </div>
+                            <div class="f-infoblock-with-icon__info_text b-infoblock-with-icon__info_text c-primary b-blog-listing__text">
+                                {{v.summary||"作者很懒，没有写简介。"}}
+                            </div>
+                            <div class="f-infoblock-with-icon__info_text b-infoblock-with-icon__info_text">
+
+                                <a href="javascrip:void(0)" class="f-more f-primary-b" @click="readText(v)">查看全文</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="b-blog-listing__block" v-if="text.length==0">
+                        <div style="padding: 20px;">暂无数据</div>
+                    </div>
+                    <div class="b-pagination f-pagination" v-if="page.totalPage>0">
+                         <ul>
+                            <li><a href="javascrip:void(0)" @click="page.currPage=1;searchText();">首页</a></li>
+                            <li><a class="prev" href="javascrip:void(0)" @click="page.currPage= page.currPage==1?1:page.currPage-1;searchText();"><i class="fa fa-angle-left"></i></a></li>
+                            <li v-for="(v ,idx) in page.totalPage" :class="{'is-active-pagination':(idx+1)==page.currPage}" @click="page.currPage=idx+1;searchText();"><a href="javascrip:void(0);">{{idx+1}}</a></li>
+                            <li><a class="next" href="javascrip:void(0);" @click="page.currPage= page.currPage==page.totalPage?page.totalPage:page.currPage+1;searchText();"><i class="fa fa-angle-right"></i></a></li>
+                            <li><a href="javascrip:void(0)" @click="page.currPage=page.totalPage;searchText();">尾页</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="visible-xs-block visible-sm-block b-hr"></div>
+                <div class="col-md-3 col-md-pull-9">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="b-form-row b-input-search">
+                                <input class="form-control" type="text" placeholder="搜索" v-model="searchTitle" @keyup.enter="page.currPage=1;searchText()"/>
+                                <span class="b-btn b-btn-search f-btn-search fa fa-search fa-2x" @click="page.currPage=1;searchText()"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row b-col-default-indent">
+                        <div class="col-md-12" id="sort-list">
+                            <div class="b-categories-filter">
+                                <h4 class="f-primary-b b-h4-special f-h4-special--gray f-h4-special">分类</h4>
+                                <ul>
+                                    <!-- <li>
+                                        <a class="f-categories-filter_name" href="#"><i class="fa fa-plus"></i> Web Design</a>
+                                        <span class="b-categories-filter_count f-categories-filter_count">12</span>
+                                    </li> -->
+                                    <li v-for="v in sort">
+                                        <a class="f-categories-filter_name" href="javascrip:void(0);" @click="page.currPage=1;selectedSortId=v.id"><i class="fa fa-plus"></i>{{v.name}}</a>
+                                        <span class="b-categories-filter_count f-categories-filter_count">{{v.count}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+  <div class="b-footer-primary">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-xs-12 f-copyright b-copyright">星辰 © 2017-12-24 </div>
+        </div>
+    </div>
+</div>
+</footer>
+
+
+</div>
+
+
+<div style="position: absolute;width: 100%;height: 100%;top: 0;z-index: 999;overflow: hidden;display: hidden;" id="loading">
+    <div class="spinner"></div>
+</div>
+
+
+<script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>
+<script src="https://cdn.bootcss.com/marked/0.3.9/marked.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script src="dist/build.js"></script>
+
+
+
+</body>
+
+</html>
