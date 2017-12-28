@@ -9,8 +9,8 @@
 			<div class="gmx-item">
 				<input type="text" v-model="title" readonly ref="input" @keyup.enter="edit()"/>
 				<div class="layui-btn-group">
-				  <button class="layui-btn layui-btn-mini layui-btn-primary" @click.stop="edit()"><i class="layui-icon" ref="icon">&#xe642;</i></button>
-				  <button class="layui-btn layui-btn-mini layui-btn-primary" @click.stop="del()"><i class="layui-icon">&#xe640;</i></button>
+				  <button class="layui-btn layui-btn-xs layui-btn-primary" @click.stop="edit()"><i class="layui-icon" ref="icon">&#xe642;</i></button>
+				  <button class="layui-btn layui-btn-xs layui-btn-primary" @click.stop="del()"><i class="layui-icon">&#xe640;</i></button>
 				</div>
 			</div>
 

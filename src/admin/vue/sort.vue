@@ -15,7 +15,7 @@
 	
 	<div style="height:100%">
 		<div class="add-sort">
-			<img src="assets/imgs/a.jpg"  class="img-circle"> <b>GMX</b><br>
+			<!-- <img src="assets/imgs/a.jpg"  class="img-circle"> <b>GMX</b><br> -->
 			<button class="layui-btn add-btn layui-bg-blue" @click="add()"><i class="layui-icon">&#xe608;</i>新建分类</button>
 		</div>
 		
@@ -44,7 +44,7 @@ export default {
 	},
 	components:{'gmx-item':item},
 	mounted:function(){
-		scroll(".sort-list");
+		$(".sort-list").niceScroll();
 		this.reload(true);
 	},
 	methods:{

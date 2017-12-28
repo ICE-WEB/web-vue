@@ -36,19 +36,19 @@ function Data(){
 	Data.prototype.readText = function(textId){
 		ajax({
 			url:this.api.read,
-			data:{id:textId},
+			data:{id:textId,type:"html"},
 			success:function(data){
 				var content = data.val;
-				content = content.replace("---summary---","> ").replace("---summary---","\n").replace(/&gt;/g,"> ");
-				marked.setOptions({
-					highlight: function (code) {
-						return hljs.highlightAuto(code).value;
-					}
-				});
+				content = content.replace("<p>—summary—<br>","<blockquote><p>").replace("—summary—</p>","</p></blockquote>");
+				// marked.setOptions({
+				// 	highlight: function (code) {
+				// 		return hljs.highlightAuto(code).value;
+				// 	}
+				// });
 
-				var html = marked(content);
-				html = html.replace(/&amp;lt;/g,"&lt;").replace(/&amp;gt;/g,"&gt;")
-				$("#textContent").html(html);
+				// var html = marked(content);
+				// html = html.replace(/&amp;lt;/g,"&lt;").replace(/&amp;gt;/g,"&gt;")
+				$("#textContent").html(content);
 			}
 		})
 	}

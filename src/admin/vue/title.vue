@@ -27,82 +27,81 @@
 </template>
 
 <script>
-	define(["vue!/web/vue/admin/item"],function(){
-		//注册组件
-		Vue.component("gmx-title",{
-			template:template,
-			data:function(){
-				return {
-					list:[],
-					idx:0,
-					sortId:-1,	
+import item from './item.vue'
+import ajax from '../../common/ajax.js'
+
+export default {
+	data:function(){
+		return {
+			list:[],
+			idx:0,
+			sortId:-1,	
+		}
+	},
+	components:{'gmx-item':item},
+	mounted:function(){
+		$(".gmx-title .title-list").niceScroll();
+	},
+	methods:{
+		reload:function(sort){
+			this.sortId = sort.id;
+			this.query();
+		},
+		query:function(){
+			var vueObj = this;
+			ajax({
+				url:"admin/text/query.api",
+				data:{sort_id:this.sortId},
+				success:function(data){
+					if(data.errCode == 0){
+						vueObj.list = data.vals;
+						if(vueObj.list.length > 0){
+							vueObj.select(vueObj.list[0],0);
+						}
+					}else{
+						layer.msg(data.errCode);
+					}
 				}
-			},
-			mounted:function(){
-				scroll(".gmx-title .title-list");
-			},
-			methods:{
-				reload:function(sort){
-					this.sortId = sort.id;
-					this.query();
-				},
-				query:function(){
-					var vueObj = this;
-					ajax({
-						url:"admin/text/query.api",
-						data:{sort_id:this.sortId},
-						success:function(data){
-							if(data.errCode == 0){
-								vueObj.list = data.vals;
-								if(vueObj.list.length > 0){
-									vueObj.select(vueObj.list[0],0);
-								}
-							}else{
-								layer.msg(data.errCode);
-							}
-						}
-					})
-				},
-				select:function (s,idx) {
-					this.idx = idx;	
-					this.$parent.$refs.article.reload(this.list[idx]);
-				},
-				add:function(){
-					var vueObj = this;
-					ajax({
-						url:"admin/text/update.api",
-						data:{type:'add',sort_id:this.sortId,title:"新建文章"},
-						success:function(data){
-							vueObj.query();
-						}
-					})
-				},
-				edit:function (title,idx) {
-					vueObj = this;
-					var text = this.list[idx];
-					ajax({
-						url:"admin/text/update.api",
-						data:{type:'update',id:text.id,title:title},
-						success:function(data){
-							vueObj.query();
-						}
-					})
-				},
-				del:function (idx) {
-					var vueObj = this;
-					var text = this.list[idx];
-					ajax({
-						url:"admin/text/update.api",
-						data:{type:'del',id:text.id},
-						success:function(data){
-							vueObj.query();
-						}
-					})
-				},
-			}
+			})
+		},
+		select:function (s,idx) {
+			this.idx = idx;	
+			this.$parent.$refs.article.reload(this.list[idx]);
+		},
+		add:function(){
+			var vueObj = this;
+			ajax({
+				url:"admin/text/update.api",
+				data:{type:'add',sort_id:this.sortId,title:"新建文章"},
+				success:function(data){
+					vueObj.query();
+				}
+			})
+		},
+		edit:function (title,idx) {
+			vueObj = this;
+			var text = this.list[idx];
+			ajax({
+				url:"admin/text/update.api",
+				data:{type:'update',id:text.id,title:title},
+				success:function(data){
+					vueObj.query();
+				}
+			})
+		},
+		del:function (idx) {
+			var vueObj = this;
+			var text = this.list[idx];
+			ajax({
+				url:"admin/text/update.api",
+				data:{type:'del',id:text.id},
+				success:function(data){
+					vueObj.query();
+				}
+			})
+		},
+	}
 
 
-		});
-	});
-
+}
 </script>
